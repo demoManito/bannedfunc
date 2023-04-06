@@ -1,0 +1,33 @@
+name: tests
+
+on:
+  push:
+    branches-ignore:
+      - 'temp'
+
+permissions:
+  contents: read
+
+jobs:
+  # Label of the container job
+  test:
+    strategy:
+      matrix:
+        go: ['1.20', '1.19']
+        platform: [ubuntu-latest] # can not run in windows OS
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v4.0.0
+      with:
+        go-version: ${{ matrix.go }}
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v3
+    - name: go mod package cache
+      uses: actions/cache@v3
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('tests/go.mod') }}
+    - name: Tests
+      run: go test ./...
