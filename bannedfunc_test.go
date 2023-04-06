@@ -29,7 +29,6 @@ func main() {
 type errorfunc func(string)
 
 func (ef errorfunc) Errorf(format string, args ...interface{}) {
-
 	ef(fmt.Sprintf(format, args...))
 }
 
