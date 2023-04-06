@@ -1,4 +1,4 @@
-module bannedfunc
+module github.com/demoManito/bannedfunc
 
 go 1.19
 
