@@ -117,7 +117,7 @@ func (bf *BannedFunc) usedImports(confMap map[string]map[string]string) map[stri
 	usedMap := make(map[string]map[string]string)
 	for _, imp := range bf.pkg.Imports() {
 		if conf, ok := confMap[imp.Path()]; ok {
-			usedMap[imp.Path()] = conf
+			usedMap[imp.Name()] = conf
 		}
 	}
 	return usedMap

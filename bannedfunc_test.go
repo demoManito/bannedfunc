@@ -16,17 +16,20 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 )
 
 func main() {
 	fmt.Println("hello")
 	fmt.Printf("%s", "hello")
+	ioutil.ReadFile("")
 }
 `
 
 type errorfunc func(string)
 
 func (ef errorfunc) Errorf(format string, args ...interface{}) {
+
 	ef(fmt.Sprintf(format, args...))
 }
 
@@ -43,8 +46,9 @@ func TestBannedFunc_Run(t *testing.T) {
 
 	// linters-settings
 	bannedfuncs := map[string]string{
-		"(fmt).Println": "Disable fmt.Println",
-		"(fmt).Printf":  "Disable fmt.Printf",
+		"(fmt).Println":        "Disable fmt.Println",
+		"(fmt).Printf":         "Disable fmt.Printf",
+		"(io/ioutil).ReadFile": "Disable ioutil.ReadFile",
 	}
 
 	// mock *testing.T
@@ -62,8 +66,9 @@ func TestBannedFunc_Run(t *testing.T) {
 		}},
 	)
 	want := []string{
-		dir + "/ban.go:9:2: unexpected diagnostic: Disable fmt.Println",
-		dir + "/ban.go:10:2: unexpected diagnostic: Disable fmt.Printf",
+		dir + "/ban.go:10:2: unexpected diagnostic: Disable fmt.Println",
+		dir + "/ban.go:11:2: unexpected diagnostic: Disable fmt.Printf",
+		dir + "/ban.go:12:2: unexpected diagnostic: Disable ioutil.ReadFile",
 	}
 	require.Equal(want, got)
 }
