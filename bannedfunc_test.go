@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"reflect"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/analysistest"
 )
@@ -33,15 +33,19 @@ func (ef errorfunc) Errorf(format string, args ...interface{}) {
 }
 
 func TestNewLinter(t *testing.T) {
-	require.NotNil(t, NewLinter(map[string]string{}, nil, nil))
+	linter := NewLinter(map[string]string{}, nil, nil)
+	if linter == nil {
+		t.Error("expected not nil, got nil")
+	}
 }
 
 func TestBannedFunc_Run(t *testing.T) {
-	require := require.New(t)
-
 	// create a temp dir and write a go file
 	dir := t.TempDir()
-	require.NoError(os.WriteFile(path.Join(dir, "ban.go"), []byte(bannedfunc_go), 0644))
+	err := os.WriteFile(path.Join(dir, "ban.go"), []byte(bannedfunc_go), 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	// linters-settings
 	bannedfuncs := map[string]string{
@@ -69,7 +73,9 @@ func TestBannedFunc_Run(t *testing.T) {
 		dir + "/ban.go:11:2: unexpected diagnostic: Disable fmt.Printf",
 		dir + "/ban.go:12:2: unexpected diagnostic: Disable ioutil.ReadFile",
 	}
-	require.Equal(want, got)
+	if !reflect.DeepEqual(want, got) {
+		t.Fatalf("expected %v, got %v", want, got)
+	}
 }
 
 func TestBannedFunc_parseBannedFunc(t *testing.T) {
