@@ -1,5 +1,5 @@
 ## About
-- `bannedfunc` checks for banned functions and reports them.
+`bannedfunc` checks for banned functions and reports them.
 
 ## Usage
 `bannedfunc` is already integrated into `golangci-lint`, and this is the recommended way to use it.
