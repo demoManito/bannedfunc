@@ -3,7 +3,9 @@
 
 ## Usage
 `bannedfunc` is already integrated into `golangci-lint`, and this is the recommended way to use it.
+
 To enable the linter, add the following lines to [`.golangci.yml`](./.golangci.example.yml)):
+
 ```yaml
 linters-settings:
   bannedfunc:
