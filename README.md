@@ -9,9 +9,9 @@ To enable the linter, add the following lines to [`.golangci.yml`](./.golangci.e
 ```yaml
 linters-settings:
   bannedfunc:
-    - (fmt).Println: 'Disable fmt.Println'
-    - (fmt).Printf: 'Disable fmt.Printf'
-    - (github.com/stretchr/testify/require).*: 'Disable github.com/stretchr/testify/require.*'
+    (fmt).Println: 'Disable fmt.Println'
+    (fmt).Printf: 'Disable fmt.Printf'
+    (github.com/stretchr/testify/require).*: 'Disable github.com/stretchr/testify/require.*'
 
 linters:
   enable:
